@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ArcanaUHC Plugin:jar">
+    <output-path>$PROJECT_DIR$/../../../Serveur ArcanaUHC/plugins</output-path>
+    <root id="archive" name="ArcanaUHC Plugin.jar">
+      <element id="module-output" name="ArcanaUHC Plugin" />
+    </root>
+  </artifact>
+</component>

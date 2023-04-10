@@ -1,5 +1,6 @@
 package fr.enderstevegamer.arcanauhc.GameSettingsMenu;
 
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -7,6 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class GeneralMenu {
@@ -42,5 +44,18 @@ public class GeneralMenu {
         for (ItemFlag flag : getFlags()) ITEM_META.addItemFlags(flag);
         ITEM.setItemMeta(ITEM_META);
         return ITEM;
+    }
+
+    public static ItemStack buildItem(Material material, String displayName, boolean settingModifier) {
+        if (!settingModifier) return buildItem(material, displayName);
+        ItemStack item = buildItem(material, displayName);
+        addSettingLore(item);
+        return item;
+    }
+
+    public static void addSettingLore(ItemStack item) {
+        final ItemMeta META = item.getItemMeta();
+        META.setLore(Arrays.asList(ChatColor.GRAY + "Clic gauche pour diminuer", ChatColor.GRAY + "Clic droit pour augmenter"));
+        item.setItemMeta(META);
     }
 }

@@ -124,11 +124,15 @@ public class StuffConfig {
         inventory.setItem(23, FLINT_AND_STEEL);
         inventory.setItem(24, FISHING_ROD);
         inventory.setItem(25, POTION);
-        inventory.setItem(39, GeneralMenu.buildItem(Material.DIAMOND_CHESTPLATE, "Limite de pièces d'armure: " + GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT)));
-        inventory.setItem(40, GeneralMenu.buildItem(Material.DIAMOND, "Limite de diamants: " + GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT)));
+        inventory.setItem(39, GeneralMenu.buildItem(Material.DIAMOND_CHESTPLATE,
+                "Limite de pièces d'armure: "
+                        + GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT), true));
+        inventory.setItem(40, GeneralMenu.buildItem(Material.DIAMOND, "Limite de diamants: "
+                + GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT), true));
         inventory.setItem(41, GAPPLE);
         inventory.setItem(42, GeneralMenu.buildItem(Material.CHEST, "Modifier le kit de départ"));
-        inventory.setItem(43, GeneralMenu.buildItem(Material.ENCHANTED_BOOK, "Modifier les limites d'enchantements"));
+        inventory.setItem(43, GeneralMenu.buildItem(Material.ENCHANTED_BOOK,
+                "Modifier les limites d'enchantements"));
 
         return inventory;
     }
@@ -203,6 +207,7 @@ public class StuffConfig {
         if (event.getCurrentItem().getData().getItemType().equals(Material.GOLDEN_APPLE)) GameSettings.setBooleanSetting(
                 GameSettings.GOLDEN_APPLE_ON_KILL, !GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)
         );
+        if (event.getCurrentItem().getData().getItemType().equals(Material.ENCHANTED_BOOK)) {player.openInventory(EnchantsLimit.getMenu()); return;}
 
         player.openInventory(StuffConfig.getMenu());
     }

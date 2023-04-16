@@ -66,12 +66,6 @@ public class StuffConfig {
         if (GameSettings.getBooleanSetting(GameSettings.ENDER_PEARLS)) PEARL_META.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
         ENDER_PEARL.setItemMeta(PEARL_META);
 
-        final ItemStack BREWING_STAND = GeneralMenu.buildItem(Material.BREWING_STAND_ITEM,
-                ((GameSettings.getBooleanSetting(GameSettings.BREWING_STANDS)) ? ChatColor.GREEN : ChatColor.RED) + "Alambics");
-        final ItemMeta STAND_META = BREWING_STAND.getItemMeta();
-        if (GameSettings.getBooleanSetting(GameSettings.BREWING_STANDS)) STAND_META.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
-        BREWING_STAND.setItemMeta(STAND_META);
-
         final ItemStack BOW = GeneralMenu.buildItem(Material.BOW,
                 ((GameSettings.getBooleanSetting(GameSettings.BOWS)) ? ChatColor.GREEN : ChatColor.RED) + "Arcs");
         final ItemMeta BOW_META = BOW.getItemMeta();
@@ -96,12 +90,6 @@ public class StuffConfig {
         if (GameSettings.getBooleanSetting(GameSettings.FISHING_ROD)) ROD_META.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
         FISHING_ROD.setItemMeta(ROD_META);
 
-        final ItemStack POTION = GeneralMenu.buildItem(Material.POTION,
-                ((GameSettings.getBooleanSetting(GameSettings.LEVEL_2_POTIONS)) ? ChatColor.GREEN : ChatColor.RED) + "Potions niveau 2+");
-        final ItemMeta POTION_META = POTION.getItemMeta();
-        if (GameSettings.getBooleanSetting(GameSettings.LEVEL_2_POTIONS)) POTION_META.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-        POTION.setItemMeta(POTION_META);
-
         final ItemStack GAPPLE = GeneralMenu.buildItem(Material.GOLDEN_APPLE,
                 ((GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)) ? ChatColor.GREEN : ChatColor.RED) + "Pommes dorée au kill");
         final ItemMeta GAPPLE_META = GAPPLE.getItemMeta();
@@ -114,21 +102,22 @@ public class StuffConfig {
         inventory.setItem(19, DMND_CHESTPLATE);
         inventory.setItem(28, DMND_LEGGINGS);
         inventory.setItem(37, DMND_BOOTS);
-        inventory.setItem(12, DMND_SWORD);
-        inventory.setItem(13, ENCHANTMENT_TABLE);
-        inventory.setItem(14, LAVA_BUCKET);
-        inventory.setItem(15, ENDER_PEARL);
-        inventory.setItem(16, BREWING_STAND);
-        inventory.setItem(21, BOW);
-        inventory.setItem(22, BOOKSHELF);
-        inventory.setItem(23, FLINT_AND_STEEL);
-        inventory.setItem(24, FISHING_ROD);
-        inventory.setItem(25, POTION);
+        inventory.setItem(13, DMND_SWORD);
+        inventory.setItem(14, ENCHANTMENT_TABLE);
+        inventory.setItem(15, LAVA_BUCKET);
+        inventory.setItem(16, ENDER_PEARL);
+        inventory.setItem(22, BOW);
+        inventory.setItem(23, BOOKSHELF);
+        inventory.setItem(24, FLINT_AND_STEEL);
+        inventory.setItem(25, FISHING_ROD);
         inventory.setItem(39, GeneralMenu.buildItem(Material.DIAMOND_CHESTPLATE,
-                "Limite de pièces d'armure: "
+                GameSettings.redIfZero(GameSettings.DIAMOND_ARMORS_LIMIT)
+                        + "Limite de pièces d'armure: "
                         + GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT), true));
-        inventory.setItem(40, GeneralMenu.buildItem(Material.DIAMOND, "Limite de diamants: "
-                + GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT), true));
+        inventory.setItem(40, GeneralMenu.buildItem(Material.DIAMOND,
+                (GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) == -1) ? ChatColor.RED + "Limite de diamants: Désactivé" :
+                        "Limite de diamants: "
+                        + GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT), true));
         inventory.setItem(41, GAPPLE);
         inventory.setItem(42, GeneralMenu.buildItem(Material.CHEST, "Modifier le kit de départ"));
         inventory.setItem(43, GeneralMenu.buildItem(Material.ENCHANTED_BOOK,
@@ -166,9 +155,6 @@ public class StuffConfig {
         if (event.getCurrentItem().getData().getItemType().equals(Material.ENDER_PEARL)) GameSettings.setBooleanSetting(
                 GameSettings.ENDER_PEARLS, !GameSettings.getBooleanSetting(GameSettings.ENDER_PEARLS)
         );
-        if (event.getCurrentItem().getData().getItemType().equals(Material.BREWING_STAND_ITEM)) GameSettings.setBooleanSetting(
-                GameSettings.BREWING_STANDS, !GameSettings.getBooleanSetting(GameSettings.BREWING_STANDS)
-        );
         if (event.getCurrentItem().getData().getItemType().equals(Material.BOW)) GameSettings.setBooleanSetting(
                 GameSettings.BOWS, !GameSettings.getBooleanSetting(GameSettings.BOWS)
         );
@@ -181,32 +167,30 @@ public class StuffConfig {
         if (event.getCurrentItem().getData().getItemType().equals(Material.FISHING_ROD)) GameSettings.setBooleanSetting(
                 GameSettings.FISHING_ROD, !GameSettings.getBooleanSetting(GameSettings.FISHING_ROD)
         );
-        if (event.getCurrentItem().getData().getItemType().equals(Material.POTION)) GameSettings.setBooleanSetting(
-                GameSettings.LEVEL_2_POTIONS, !GameSettings.getBooleanSetting(GameSettings.LEVEL_2_POTIONS)
-        );
         if (event.getSlot() == 39) {
             if (event.getClick().equals(ClickType.LEFT) && GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT) > 0) {
-                GameSettings.setIntegerSettings(GameSettings.DIAMOND_ARMORS_LIMIT,
+                GameSettings.setIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT,
                         GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT) - 1);
             }
             else if (event.getClick().equals(ClickType.RIGHT) && GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT) < 4) {
-                GameSettings.setIntegerSettings(GameSettings.DIAMOND_ARMORS_LIMIT,
+                GameSettings.setIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT,
                         GameSettings.getIntegerSetting(GameSettings.DIAMOND_ARMORS_LIMIT) + 1);
             }
         }
         if (event.getCurrentItem().getData().getItemType().equals(Material.DIAMOND)) {
-            if (event.getClick().equals(ClickType.LEFT) && GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) > 0) {
-                GameSettings.setIntegerSettings(GameSettings.DIAMOND_LIMIT,
+            if (event.getClick().equals(ClickType.LEFT) && GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) > -1) {
+                GameSettings.setIntegerSetting(GameSettings.DIAMOND_LIMIT,
                         GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) - 1);
             }
             else if (event.getClick().equals(ClickType.RIGHT) && GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) < 30) {
-                GameSettings.setIntegerSettings(GameSettings.DIAMOND_LIMIT,
+                GameSettings.setIntegerSetting(GameSettings.DIAMOND_LIMIT,
                         GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) + 1);
             }
         }
         if (event.getCurrentItem().getData().getItemType().equals(Material.GOLDEN_APPLE)) GameSettings.setBooleanSetting(
                 GameSettings.GOLDEN_APPLE_ON_KILL, !GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)
         );
+        if (event.getCurrentItem().getData().getItemType().equals(Material.CHEST)) {player.openInventory(StartingStuffConfig.getMenu()); return;}
         if (event.getCurrentItem().getData().getItemType().equals(Material.ENCHANTED_BOOK)) {player.openInventory(EnchantsLimit.getMenu()); return;}
 
         player.openInventory(StuffConfig.getMenu());

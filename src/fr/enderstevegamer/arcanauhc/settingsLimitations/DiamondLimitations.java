@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class DiamondLimitations {
     public static void onItemPickup(PlayerPickupItemEvent event) {
+        if (GameSettings.getIntegerSetting(GameSettings.DIAMOND_LIMIT) == -1) return;
         Item itemEntity = event.getItem();
         ItemStack item = itemEntity.getItemStack();
         if (item == null) return;

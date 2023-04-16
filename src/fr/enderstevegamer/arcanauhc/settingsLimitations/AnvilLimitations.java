@@ -88,5 +88,10 @@ public class AnvilLimitations {
                     + GameSettings.getIntegerSetting(GameSettings.EnchantsLimits.PUNCH));
             event.setCancelled(true);
         }
+        if (enchants.containsKey(Enchantment.SILK_TOUCH)) {
+            player.sendMessage(ChatColor.RED + "L'enchantement "
+                    + ChatColor.GOLD + "Silk touch" + ChatColor.RED + " est interdit");
+            event.setCancelled(true);
+        }
     }
 }

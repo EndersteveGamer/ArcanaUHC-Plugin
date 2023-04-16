@@ -1,8 +1,10 @@
 package fr.enderstevegamer.arcanauhc.utils;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public class PlayerInfo {
     public static int diamondArmorCount(Player player) {
@@ -23,5 +25,13 @@ public class PlayerInfo {
             }
         }
         return i;
+    }
+
+    public static boolean isInLava(Player player) {
+        Location location = player.getLocation().getBlock().getLocation();
+        Location location1 = location.clone().add(new Vector(0, 1, 0));
+        Material mat = player.getWorld().getBlockAt(location).getType();
+        Material mat1 = player.getWorld().getBlockAt(location1).getType();
+        return (BlockUtils.isLavaBlock(mat) || BlockUtils.isLavaBlock(mat1));
     }
 }

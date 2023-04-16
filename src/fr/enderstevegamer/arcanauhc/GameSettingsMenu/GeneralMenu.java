@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class GeneralMenu {
@@ -21,20 +22,23 @@ public class GeneralMenu {
     }
 
     public static void setGlassPanes(Inventory inventory) {
+        inventory.setItem(0, getGlassPane());
+        inventory.setItem(1, getGlassPane());
+        for (int i = 9; i <= 36; i += 9) {
+            inventory.setItem(i, getGlassPane());
+            inventory.setItem(i + 8, getGlassPane());
+        }
+        inventory.setItem(52, getGlassPane());
+        inventory.setItem(53, getGlassPane());
+    }
+
+    public static ItemStack getGlassPane() {
         final ItemStack GLASS_PANE = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.LIGHT_BLUE.getData());
         final ItemMeta GLASS_META = GLASS_PANE.getItemMeta();
         GLASS_META.setDisplayName(" ");
         for (ItemFlag flag : getFlags()) GLASS_META.addItemFlags(flag);
         GLASS_PANE.setItemMeta(GLASS_META);
-
-        inventory.setItem(0,GLASS_PANE);
-        inventory.setItem(1, GLASS_PANE);
-        for (int i = 9; i <= 36; i += 9) {
-            inventory.setItem(i, GLASS_PANE);
-            inventory.setItem(i + 8, GLASS_PANE);
-        }
-        inventory.setItem(52, GLASS_PANE);
-        inventory.setItem(53, GLASS_PANE);
+        return GLASS_PANE;
     }
 
     public static ItemStack buildItem(Material material, String displayName) {
@@ -56,6 +60,12 @@ public class GeneralMenu {
     public static void addSettingLore(ItemStack item) {
         final ItemMeta META = item.getItemMeta();
         META.setLore(Arrays.asList(ChatColor.GRAY + "Clic gauche pour diminuer", ChatColor.GRAY + "Clic droit pour augmenter"));
+        item.setItemMeta(META);
+    }
+
+    public static void setItemLore(ItemStack item, List<String> lore) {
+        final ItemMeta META = item.getItemMeta();
+        META.setLore(lore);
         item.setItemMeta(META);
     }
 }

@@ -1,5 +1,7 @@
 package fr.enderstevegamer.arcanauhc.GameSettingsMenu;
 
+import fr.enderstevegamer.arcanauhc.GameState;
+import fr.enderstevegamer.arcanauhc.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class MainSettingsMenu {
     public static Inventory getMenu() {
@@ -45,7 +48,25 @@ public class MainSettingsMenu {
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player)) return;
         Player player = (Player) event.getWhoClicked();
-        if (event.getCurrentItem().getData().getItemType().equals(Material.DIAMOND_SWORD)) {player.openInventory(StuffConfig.getMenu()); return;}
+        if (event.getCurrentItem().getType().equals(Material.DIAMOND_SWORD)) {player.openInventory(StuffConfig.getMenu()); return;}
+        if (event.getCurrentItem().getType().equals(Material.DIAMOND_CHESTPLATE)) {player.openInventory(TeamsConfig.getMenu()); return;}
+        if (event.getCurrentItem().getType().equals(Material.GRASS)) {player.openInventory(WorldConfig.getMenu()); return;}
+        if (event.getCurrentItem().getType().equals(Material.ENCHANTED_BOOK)) {player.openInventory(ScenariosConfig.getMenu()); return;}
+        if (event.getCurrentItem().getType().equals(Material.COMMAND)) {player.openInventory(ServerSettings.getMenu()); return;}
+        if (event.getSlot() == 47) {
+            if (GameState.isPregenerating()) {
+                player.sendMessage(ChatColor.RED + "Le monde est déjà en train de se prégénérer!");
+            }
+            else {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        GameState.pregenerateWorld();
+                    }
+                }.runTaskLater(Main.getInstance(), 1);
+                player.closeInventory();
+            }
+        }
         player.openInventory(MainSettingsMenu.getMenu());
     }
 }

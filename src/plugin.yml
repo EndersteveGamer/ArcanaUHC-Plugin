@@ -8,3 +8,12 @@ commands:
   config:
     description: Utilisé pour configurer la partie
     usage: /config
+    aliases: [cg]
+  equipstartingstuff:
+    description: Utilisé pour équiper un stuff de départ à une personne
+    usage: /equipstartingstuff <player>
+    aliases: [startingstuff]
+  setgamename:
+    description: Utilisé pour redéfinir le nom de la partie
+    usage: /setgamename <nom de la partie>
+    aliases: [gamename]

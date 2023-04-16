@@ -85,4 +85,13 @@ public class Arcane {
     public String toString() {
         return string_forms.get(this.id);
     }
+
+    public static Arcane getRandomArcane() {
+        int i = (int) (Math.random() * 23);
+        return new Arcane(i);
+    }
+
+    public Arcane copy() {
+        return new Arcane(this.id);
+    }
 }

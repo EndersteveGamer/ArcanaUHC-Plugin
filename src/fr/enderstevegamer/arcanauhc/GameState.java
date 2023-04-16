@@ -1,14 +1,15 @@
 package fr.enderstevegamer.arcanauhc;
 
 import fr.enderstevegamer.arcanauhc.utils.MathUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import fr.enderstevegamer.arcanauhc.utils.PlayerUtils;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class GameState {
@@ -17,13 +18,11 @@ public class GameState {
     private static long startTime;
     private static boolean worldPregenerated;
     private static boolean isPregenerating;
+    private static HashMap<UUID, Arcane> playerArcanes;
+    private static boolean warnedAboutPregen;
 
     public static boolean isPvpEnabled() {
         return pvpEnabled;
-    }
-
-    public static void resetGameState() {
-        pvpEnabled = false;
     }
 
     public static void enablePvp() {
@@ -32,6 +31,14 @@ public class GameState {
 
     public static void disablePvp() {
         pvpEnabled = false;
+    }
+
+    public static boolean getWarnedAboutPregen() {
+        return warnedAboutPregen;
+    }
+
+    public static void setWarnedAboutPregen(boolean warned) {
+        warnedAboutPregen = warned;
     }
 
     public static long getGameTime() {
@@ -58,15 +65,13 @@ public class GameState {
         return isPregenerating;
     }
 
-    public static void startGame() {
-        startTime = System.currentTimeMillis();
-    }
-
     public static void resetGame() {
         setWorldPregenerated(false);
         disablePvp();
         setGameStarted(false);
         isPregenerating = false;
+        playerArcanes = new HashMap<>();
+        setWarnedAboutPregen(false);
     }
 
     public static void pregenerateWorld() {
@@ -76,6 +81,7 @@ public class GameState {
             @Override
             public void run() {
                 Bukkit.getLogger().log(Level.INFO, "Pregeneration finie!");
+                GameState.setWorldPregenerated(true);
             }
         }.runTaskLater(Main.getInstance(), 9500);
         for (int i = -47; i <= 47; i++) {
@@ -115,5 +121,51 @@ public class GameState {
                 }
             }
         }.runTaskLater(Main.getInstance(), (long) (step * 10f));
+    }
+
+    public static void startGame() {
+        startTime = System.currentTimeMillis();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setGameMode(GameMode.SURVIVAL);
+            player.getInventory().clear();
+            PlayerUtils.equipStartingStuff(player);
+            player.teleport(Bukkit.getWorld("world2").getHighestBlockAt(0, 0).getLocation().add(new Vector(0, 1, 0)));
+        }
+
+        Bukkit.getWorld("world2").getWorldBorder().setCenter(0, 0);
+        Bukkit.getWorld("world2").getWorldBorder().setSize(GameSettings.getIntegerSetting(GameSettings.DEFAULT_BORDER_SIZE));
+
+        for (Player player : Bukkit.getOnlinePlayers()) playerArcanes.put(player.getUniqueId(), Arcane.SANS_ARCANE);
+    }
+
+    public static void distributeArcanes() {
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getGameMode().equals(GameMode.SURVIVAL)) players.add(player);
+        }
+
+        ArrayList<Arcane> arcanes = new ArrayList<>();
+        for (Arcane arcane : GameSettings.arcanesNumbers.keySet()) {
+            for (int i = 0; i < GameSettings.arcanesNumbers.get(arcane); i++) arcanes.add(arcane);
+        }
+        while (arcanes.size() < players.size()) {
+            if (GameSettings.getBooleanSetting(GameSettings.COMPLETE_RANDOM_ARCANE)) {
+                arcanes.add(Arcane.getRandomArcane());
+            }
+            else arcanes.add(Arcane.SANS_ARCANE.copy());
+        }
+
+        for (Player player : players) {
+            int i = (int) (Math.random() * arcanes.size());
+            playerArcanes.put(player.getUniqueId(), arcanes.get(i));
+            if (arcanes.get(i).equals(Arcane.SANS_ARCANE)) {
+                player.sendMessage(ChatColor.GOLD + "Vous n'avez pas reçu d'Arcane!");
+            }
+            else {
+                player.sendMessage(ChatColor.GOLD + "Vous avez reçu l'Arcane " + arcanes.get(i).toString());
+            }
+            arcanes.remove(i);
+        }
     }
 }

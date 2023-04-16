@@ -36,6 +36,7 @@ public class Main extends JavaPlugin {
         getCommand("setgamename").setExecutor(new SetGameName());
 
         GameSettings.resetSettings();
+        GameState.resetGame();
 
         Bukkit.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new OnItemPickup(), this);

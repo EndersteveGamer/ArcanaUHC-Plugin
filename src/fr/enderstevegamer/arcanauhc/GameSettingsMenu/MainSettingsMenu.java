@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.logging.Level;
+
 public class MainSettingsMenu {
     public static Inventory getMenu() {
         Inventory inventory = Bukkit.createInventory(null, 54, ChatColor.GOLD + "Configuration");
@@ -65,6 +67,22 @@ public class MainSettingsMenu {
                     }
                 }.runTaskLater(Main.getInstance(), 1);
                 player.closeInventory();
+            }
+        }
+        if (event.getSlot() == 49) {
+            if (!GameState.isWorldPregenerated() && !GameState.getWarnedAboutPregen()) {
+                event.getWhoClicked().sendMessage(ChatColor.RED + "Vous n'avez pas encore prégénéré le monde!");
+                event.getWhoClicked().sendMessage(ChatColor.RED + "Cliquez à nouveau pour commencer la partie quand même");
+                GameState.setWarnedAboutPregen(true);
+            }
+            else {
+                try {
+                    GameState.startGame();
+                }
+                catch (NullPointerException e) {
+                    Bukkit.getLogger().log(Level.SEVERE, e.toString());
+                    event.getWhoClicked().sendMessage(ChatColor.RED + "Le monde n'a pas été prégénéré et la partie n'a pas pu commencer");
+                }
             }
         }
         player.openInventory(MainSettingsMenu.getMenu());

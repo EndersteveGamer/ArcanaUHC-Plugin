@@ -24,5 +24,8 @@ public class OnEntityDamageByEntity implements Listener {
         Justice.onAttack(event);
         RoueDeLaFortune.onAttack(event);
         Force.onAttack(event);
+        Force.onArrowHit(event);
+        Force.onArrowDamage(event);
+        Pendu.onArrowHit(event);
     }
 }

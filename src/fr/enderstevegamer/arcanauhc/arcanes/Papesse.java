@@ -47,7 +47,7 @@ public class Papesse {
         if (!GameState.getPlayerArcane(event.getPlayer()).equals(Arcane.PAPESSE)) return;
         if (event.getPlayer().getItemInHand() == null) return;
         if (!event.getBlock().getType().equals(Material.LAPIS_ORE)) return;
-        if (Math.random() >= 0.95) return;
+        if (Math.random() > 0.05) return;
         event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);

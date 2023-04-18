@@ -1,17 +1,16 @@
 package fr.enderstevegamer.arcanauhc.listeners;
 
 import fr.enderstevegamer.arcanauhc.Arcane;
+import fr.enderstevegamer.arcanauhc.GameSettings;
 import fr.enderstevegamer.arcanauhc.GameState;
 import fr.enderstevegamer.arcanauhc.arcanes.Empereur;
 import fr.enderstevegamer.arcanauhc.arcanes.Justice;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -22,6 +21,9 @@ public class OnPlayerDeath implements Listener {
         event.setDeathMessage("");
         Empereur.onKill(event);
         Justice.onKill(event);
+        if (event.getEntity().getKiller() != null && GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)) {
+            event.getEntity().getKiller().getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
+        }
         if (event.getEntity().getKiller() == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " est mort!");

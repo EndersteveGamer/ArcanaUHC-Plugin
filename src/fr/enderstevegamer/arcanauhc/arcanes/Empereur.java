@@ -26,7 +26,7 @@ public class Empereur {
         if (!(event.getDamager() instanceof Player)) return;
         Player damager = (Player) event.getDamager();
         if (!GameState.getPlayerArcane(damager).equals(Arcane.EMPEREUR)) return;
-        if (Math.random() >= 0.75) return;
+        if (Math.random() >= 0.25) return;
         if (GameState.isPvpDisabled()) return;
         event.getEntity().setFireTicks(80);
     }

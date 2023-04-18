@@ -21,11 +21,13 @@ public class GiveArcanesEffects extends BukkitRunnable {
             Chariot.giveEffects(player);
             Hermite.giveEffects(player);
             RoueDeLaFortune.giveEffects(player);
+            Pendu.giveEffects(player);
 
 
             Arcane arcane = GameState.getPlayerArcane(player);
             if (arcane.equals(Arcane.EMPEREUR)) player.setMaxHealth(18);
             else if (arcane.equals(Arcane.HERMITE)) player.setMaxHealth(24);
+            else if (arcane.equals(Arcane.FORCE)) player.setMaxHealth(18);
             else player.setMaxHealth(20);
         }
     }

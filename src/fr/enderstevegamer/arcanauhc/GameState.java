@@ -40,6 +40,11 @@ public class GameState {
     private static boolean hermiteOnSpeed;
     private static long roueDeLaFortuneCooldown;
     private static HashMap<UUID, Integer[]> roueDeLaFortuneEffects;
+    private static HashMap<UUID, Long> penduImmobilized;
+
+    public static void penduImmobilize(Player player) {
+        penduImmobilized.put(player.getUniqueId(), System.currentTimeMillis());
+    }
 
     public static Integer[] getRoueDeLaFortuneEffects(Player player) {
         return roueDeLaFortuneEffects.get(player.getUniqueId());
@@ -256,6 +261,7 @@ public class GameState {
         hermiteOnSpeed = false;
         roueDeLaFortuneCooldown = System.currentTimeMillis();
         roueDeLaFortuneEffects = new HashMap<>();
+        penduImmobilized = new HashMap<>();
     }
 
     public static void pregenerateWorld() {

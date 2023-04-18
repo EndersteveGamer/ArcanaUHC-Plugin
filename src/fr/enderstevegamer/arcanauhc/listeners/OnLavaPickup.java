@@ -1,6 +1,7 @@
 package fr.enderstevegamer.arcanauhc.listeners;
 
 import fr.enderstevegamer.arcanauhc.GameSettings;
+import fr.enderstevegamer.arcanauhc.arcanes.Force;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,9 @@ public class OnLavaPickup implements Listener {
                 && !GameSettings.getBooleanSetting(GameSettings.LAVA_BUCKETS)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Les seaux de lave sont désactivés!");
+        }
+        else {
+            Force.preventLavaTaking(event);
         }
     }
 }

@@ -34,7 +34,7 @@ public class StartingStuffConfig {
         final ItemStack BOOK = GeneralMenu.buildItem(Material.WRITTEN_BOOK, ChatColor.RESET + "Première ligne: armure");
         final ItemMeta BOOK_META = BOOK.getItemMeta();
         BOOK_META.setLore(Arrays.asList(
-                ChatColor.WHITE + String.valueOf(ChatColor.ITALIC) + "L'armure se mets du casque aux bottes de",
+                ChatColor.WHITE + String.valueOf(ChatColor.ITALIC) + "L'armure se met du casque aux bottes de",
                 ChatColor.WHITE + String.valueOf(ChatColor.ITALIC) + "gauche à droite",
                 ChatColor.WHITE + "Deuxième à quatrième ligne: inventaire",
                 ChatColor.WHITE + "Cinquième ligne: hotbar"));

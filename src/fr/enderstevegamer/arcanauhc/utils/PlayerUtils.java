@@ -3,8 +3,10 @@ package fr.enderstevegamer.arcanauhc.utils;
 import fr.enderstevegamer.arcanauhc.GameSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.logging.Level;
 
@@ -32,5 +34,9 @@ public class PlayerUtils {
         for (int i = 0; i < 9; i++) {
             player.getInventory().setItem(i, GameSettings.getStartingInventory()[27 + i]);
         }
+    }
+
+    public static Block getBlockUnder(Player player) {
+        return player.getWorld().getBlockAt(player.getLocation().add(new Vector(0, -1, 0)));
     }
 }

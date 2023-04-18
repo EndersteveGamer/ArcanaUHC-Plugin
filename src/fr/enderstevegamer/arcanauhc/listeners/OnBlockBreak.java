@@ -1,6 +1,9 @@
 package fr.enderstevegamer.arcanauhc.listeners;
 
 import fr.enderstevegamer.arcanauhc.GameSettings;
+import fr.enderstevegamer.arcanauhc.arcanes.Bateleur;
+import fr.enderstevegamer.arcanauhc.arcanes.Pape;
+import fr.enderstevegamer.arcanauhc.arcanes.Papesse;
 import fr.enderstevegamer.arcanauhc.scenarios.Timber;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -18,6 +21,9 @@ import org.bukkit.util.Vector;
 public class OnBlockBreak implements Listener {
     @EventHandler
     public static void onBlockBreak(BlockBreakEvent event) {
+        Bateleur.onBlockBreak(event);
+        Papesse.onBlockBreak(event);
+        Pape.onBlockBreak(event);
         if (event.getPlayer().getItemInHand().getType().equals(Material.DIAMOND_AXE)
                 && (event.getBlock().getType().equals(Material.LOG) || event.getBlock().getType().equals(Material.LOG_2))
                 && GameSettings.getBooleanSetting(GameSettings.Scenarios.TIMBER)) Timber.timberBlock(event.getBlock(), false);
@@ -59,12 +65,6 @@ public class OnBlockBreak implements Listener {
                         event.getBlock().getWorld().dropItem(
                                 event.getBlock().getLocation().add(new Vector(0.5, 0.5, 0.5)),
                                 new ItemStack(Material.APPLE)
-                        );
-                    }
-                    if (Math.random() >= 1 - 0.02) {
-                        event.getBlock().getWorld().dropItem(
-                                event.getBlock().getLocation().add(new Vector(0.5, 0.5, 0.5)),
-                                new ItemStack(Material.STICK, 1 + ((Math.random() > 0.5) ? 1 : 0))
                         );
                     }
                 }

@@ -17,3 +17,7 @@ commands:
     description: Utilisé pour redéfinir le nom de la partie
     usage: /setgamename <nom de la partie>
     aliases: [gamename]
+  doc:
+    description: Affiche le lien du Gitbook du mode de jeu
+    usage: /doc
+    aliases: [dc]

@@ -1,8 +1,11 @@
 package fr.enderstevegamer.arcanauhc.settingsLimitations;
 
+import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameSettings;
+import fr.enderstevegamer.arcanauhc.GameState;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,10 +41,17 @@ public class EnchantLimitations {
     public static void limitEnchant(InventoryClickEvent event, Map<Enchantment, Integer> enchants, Enchantment enchant,
                                     String setting, String enchantName) {
         if (!enchants.containsKey(enchant)) return;
-        if (enchants.get(enchant) > GameSettings.getIntegerSetting(setting)) {
-            enchants.put(enchant, GameSettings.getIntegerSetting(setting));
+        if (enchants.get(enchant) > GameSettings.getIntegerSetting(setting) + limitBonus(event)) {
+            enchants.put(enchant, GameSettings.getIntegerSetting(setting) + limitBonus(event));
             event.getWhoClicked().sendMessage(ChatColor.RED + "Cet objet dépassait la limite d'enchantement pour " +
                     ChatColor.GOLD + enchantName + ChatColor.RED + ", et son niveau d'enchantement a été réduit");
         }
+    }
+
+    private static int limitBonus(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return 0;
+        Player player = (Player) event.getWhoClicked();
+        if (!GameState.getPlayerArcane(player).equals(Arcane.PAPESSE)) return 0;
+        else return 1;
     }
 }

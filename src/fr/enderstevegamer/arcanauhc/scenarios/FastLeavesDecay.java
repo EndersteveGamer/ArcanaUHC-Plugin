@@ -14,7 +14,6 @@ public class FastLeavesDecay {
 
     public static void accelerateLeafDecay(Block block, int recursion) {
         if (recursion <= 0) return;
-        // Vérifier si le bloc est une feuille
         if (block.getType() == Material.LEAVES || block.getType() == Material.LEAVES_2) {
             if (block.getType().equals(Material.LEAVES)) {
                 Tree tree = (Tree) block.getState().getData();
@@ -31,12 +30,6 @@ public class FastLeavesDecay {
                         block.getWorld().dropItem(
                                 block.getLocation().add(new Vector(0.5, 0.5, 0.5)),
                                 new ItemStack(Material.APPLE)
-                        );
-                    }
-                    if (Math.random() >= 1 - 0.02) {
-                        block.getWorld().dropItem(
-                                block.getLocation().add(new Vector(0.5, 0.5, 0.5)),
-                                new ItemStack(Material.STICK, 1 + ((Math.random() > 0.5) ? 1 : 0))
                         );
                     }
                 }

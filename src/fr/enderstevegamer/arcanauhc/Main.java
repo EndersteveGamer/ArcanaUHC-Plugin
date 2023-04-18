@@ -1,13 +1,12 @@
 package fr.enderstevegamer.arcanauhc;
 
 import fr.enderstevegamer.arcanauhc.commands.Config;
+import fr.enderstevegamer.arcanauhc.commands.Doc;
 import fr.enderstevegamer.arcanauhc.commands.EquipStartingStuff;
 import fr.enderstevegamer.arcanauhc.commands.SetGameName;
 import fr.enderstevegamer.arcanauhc.commands.tabcompleters.EquipStartingStuffCompleter;
 import fr.enderstevegamer.arcanauhc.listeners.*;
-import fr.enderstevegamer.arcanauhc.loops.ArmorPassiveLimit;
-import fr.enderstevegamer.arcanauhc.loops.DiamondPassiveLimit;
-import fr.enderstevegamer.arcanauhc.loops.SetScoreboards;
+import fr.enderstevegamer.arcanauhc.loops.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +33,7 @@ public class Main extends JavaPlugin {
         getCommand("equipstartingstuff").setExecutor(new EquipStartingStuff());
         getCommand("equipstartingstuff").setTabCompleter(new EquipStartingStuffCompleter());
         getCommand("setgamename").setExecutor(new SetGameName());
+        getCommand("doc").setExecutor(new Doc());
 
         GameSettings.resetSettings();
         GameState.resetGame();
@@ -50,10 +50,17 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new OnServerListPing(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerXpChange(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnEntityDamageByEntity(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnItemConsume(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnProjectileLand(), this);
 
         new ArmorPassiveLimit().runTaskTimer(this, 0, 0);
         new DiamondPassiveLimit().runTaskTimer(this, 0, 0);
         new SetScoreboards().runTaskTimer(this, 0, 0);
+        new GameStateUpdater().runTaskTimer(this, 0, 0);
+        new GiveArcanesEffects().runTaskTimer(this, 0, 0);
 
         healthSbAll = Bukkit.getScoreboardManager().getNewScoreboard();
         healthObjectiveAll1 = healthSbAll.registerNewObjective("health", "health");

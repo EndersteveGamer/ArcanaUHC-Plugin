@@ -49,9 +49,11 @@ public class ServerSettings {
         inventory.setItem(22, item);
 
         inventory.setItem(23, GeneralMenu.buildItem(Material.GOLD_SWORD,
-                "Temps avant activation du PVP: " + DisplayUtils.minutesToTimeString(
+                (GameSettings.getIntegerSetting(GameSettings.TIME_BEFORE_PVP) == 0)
+                        ? ChatColor.RED + "PVP activé instantanément"
+                        : ("Temps avant activation du PVP: " + DisplayUtils.minutesToTimeString(
                         GameSettings.getIntegerSetting(GameSettings.TIME_BEFORE_PVP)
-                ), true));
+                )), true));
 
         inventory.setItem(24, booleanSettingItem(Material.IRON_HELMET, GameSettings.LIFE_UNDER_NAME, "Vie sous le pseudo"));
         inventory.setItem(31, GeneralMenu.buildItem(Material.EXP_BOTTLE, "Taux d'expérience: " +
@@ -79,7 +81,7 @@ public class ServerSettings {
         if (slot == 28) GameSettings.toggleBooleanSetting(GameSettings.SPECTATORS_CAN_JOIN);
         if (slot == 37) GameSettings.toggleBooleanSetting(GameSettings.HEALTH_IN_TAB);
         if (slot == 22) GameSettings.clickIntSetting(event, GameSettings.FINAL_HEAL, 0, 180, 5);
-        if (slot == 23) GameSettings.clickIntSetting(event, GameSettings.TIME_BEFORE_PVP, 5, 90, 5);
+        if (slot == 23) GameSettings.clickIntSetting(event, GameSettings.TIME_BEFORE_PVP, 0, 90, 5);
         if (slot == 24) GameSettings.toggleBooleanSetting(GameSettings.LIFE_UNDER_NAME);
         if (slot == 31) GameSettings.clickIntSetting(event, GameSettings.XP_RATE, 0, 300, 5);
         if (slot == 32) GameSettings.clickIntSetting(event, GameSettings.FLINT_DROP, 0, 100);

@@ -242,4 +242,8 @@ public class GameSettings {
             addToArcane(arcane, 1);
         }
     }
+
+    public static String getGameName() {
+        return gameName;
+    }
 }

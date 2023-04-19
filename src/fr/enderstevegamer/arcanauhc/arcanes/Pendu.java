@@ -2,10 +2,13 @@ package fr.enderstevegamer.arcanauhc.arcanes;
 
 import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameState;
+import fr.enderstevegamer.arcanauhc.listeners.OnPlayerMove;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,5 +37,13 @@ public class Pendu {
         if (!GameState.getPlayerArcane(shooter).equals(Arcane.PENDU)) return;
         if (Math.random() >= 0.1) return;
         GameState.penduImmobilize(damaged);
+        damaged.sendMessage(ChatColor.RED + "Vous avez été immobilisé par un arcane " + ChatColor.GOLD + Arcane.PENDU);
+    }
+
+    public static void onMove(PlayerMoveEvent event) {
+        if (GameState.isPenduImmobilized(event.getPlayer())) {
+            event.setCancelled(true);
+            event.getPlayer().setFallDistance(0);
+        }
     }
 }

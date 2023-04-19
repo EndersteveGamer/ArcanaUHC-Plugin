@@ -1,9 +1,7 @@
 package fr.enderstevegamer.arcanauhc.listeners;
 
 import fr.enderstevegamer.arcanauhc.GameSettings;
-import fr.enderstevegamer.arcanauhc.arcanes.Bateleur;
-import fr.enderstevegamer.arcanauhc.arcanes.Chariot;
-import fr.enderstevegamer.arcanauhc.arcanes.Pendu;
+import fr.enderstevegamer.arcanauhc.arcanes.*;
 import fr.enderstevegamer.arcanauhc.scenarios.NoDeathBeforePvp;
 import fr.enderstevegamer.arcanauhc.scenarios.SafeMiners;
 import org.bukkit.entity.EntityType;
@@ -21,5 +19,10 @@ public class OnEntityDamageEvent implements Listener {
         Bateleur.onDamage(event);
         Chariot.onDamageTaken(event);
         Pendu.onDamage(event);
+        Temperance.onDamage(event);
+        MaisonDieu.cancelFallDamage(event);
+        Etoile.onDamage(event);
+        Lune.onDamage(event);
+        Soleil.onDamage(event);
     }
 }

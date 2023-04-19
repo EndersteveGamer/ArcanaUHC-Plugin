@@ -27,5 +27,19 @@ public class OnEntityDamageByEntity implements Listener {
         Force.onArrowHit(event);
         Force.onArrowDamage(event);
         Pendu.onArrowHit(event);
+        SansNom.onDamage(event);
+        SansNom.onAttack(event);
+        MaisonDieu.onArrowHit(event);
+        MaisonDieu.onAttack(event);
+        Etoile.onAttack(event);
+        Etoile.onArrowHit(event);
+        Lune.onAttack(event);
+        Lune.onArrowHit(event);
+        Soleil.onAttack(event);
+        Soleil.onArrowHit(event);
+        Jugement.onDamage(event);
+        Jugement.onAttack(event);
+        Mat.onAttack(event);
+        Mat.onArrowHit(event);
     }
 }

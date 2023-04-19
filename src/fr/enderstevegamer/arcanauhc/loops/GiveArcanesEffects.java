@@ -22,12 +22,18 @@ public class GiveArcanesEffects extends BukkitRunnable {
             Hermite.giveEffects(player);
             RoueDeLaFortune.giveEffects(player);
             Pendu.giveEffects(player);
+            Temperance.giveEffects(player);
+            MaisonDieu.giveEffects(player);
+            Monde.giveEffects(player);
+            Mat.giveEffects(player);
 
 
             Arcane arcane = GameState.getPlayerArcane(player);
             if (arcane.equals(Arcane.EMPEREUR)) player.setMaxHealth(18);
             else if (arcane.equals(Arcane.HERMITE)) player.setMaxHealth(24);
             else if (arcane.equals(Arcane.FORCE)) player.setMaxHealth(18);
+            else if (arcane.equals(Arcane.MONDE)) player.setMaxHealth(26);
+            else if (arcane.equals(Arcane.MAT)) player.setMaxHealth(18);
             else player.setMaxHealth(20);
         }
     }

@@ -3,6 +3,7 @@ package fr.enderstevegamer.arcanauhc.loops;
 import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameSettings;
 import fr.enderstevegamer.arcanauhc.GameState;
+import fr.enderstevegamer.arcanauhc.arcanes.Monde;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -68,6 +69,7 @@ public class GameStateUpdater extends BukkitRunnable {
             GameState.updateHermites();
             GameState.updateRoueDeLaFortune();
             GameState.updateAmoureuxLinks();
+            Monde.giveInformation();
         }
     }
 

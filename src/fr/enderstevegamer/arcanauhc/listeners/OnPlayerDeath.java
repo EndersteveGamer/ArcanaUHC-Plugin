@@ -3,8 +3,10 @@ package fr.enderstevegamer.arcanauhc.listeners;
 import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameSettings;
 import fr.enderstevegamer.arcanauhc.GameState;
+import fr.enderstevegamer.arcanauhc.arcanes.Diable;
 import fr.enderstevegamer.arcanauhc.arcanes.Empereur;
 import fr.enderstevegamer.arcanauhc.arcanes.Justice;
+import fr.enderstevegamer.arcanauhc.utils.ActionbarUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +23,25 @@ public class OnPlayerDeath implements Listener {
         event.setDeathMessage("");
         Empereur.onKill(event);
         Justice.onKill(event);
+        Diable.onKill(event);
+
+        if (!GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SANS_NOM)) {
+            GameState.upgradeJugementStrength();
+        }
+
+        if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.LUNE)) {
+            GameState.setInfiniteTime(1);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(ChatColor.GOLD + "La lumière illumine ce monde");
+            }
+        }
+        else if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SOLEIL)) {
+            GameState.setInfiniteTime(-1);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(ChatColor.GOLD + "L'obscurité assombrit ce monde");
+            }
+        }
+
         if (event.getEntity().getKiller() != null && GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)) {
             event.getEntity().getKiller().getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
         }
@@ -73,9 +94,6 @@ public class OnPlayerDeath implements Listener {
             }
         }
 
-        if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.LUNE)) GameState.setInfiniteTime(-1);
-        else if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SOLEIL)) GameState.setInfiniteTime(1);
-
         GameState.setPlayerArcane(event.getEntity().getUniqueId(), Arcane.SANS_ARCANE);
 
         event.getEntity().setGameMode(GameMode.SPECTATOR);
@@ -83,5 +101,15 @@ public class OnPlayerDeath implements Listener {
         event.getEntity().spigot().respawn();
         event.getEntity().teleport(location);
         event.getEntity().sendTitle(ChatColor.RED + "Vous êtes mort!", "");
+
+        if (GameState.getAlivePlayers().size() == 2) {
+            GameState.setGameStarted(false);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                ActionbarUtils.sendActionBarMessage(player, ChatColor.GOLD + "Fin de la partie!");
+                ArrayList<UUID> list = (ArrayList<UUID>) GameState.getAlivePlayers().clone();
+                list.remove(event.getEntity().getUniqueId());
+                player.sendMessage(ChatColor.GOLD + Bukkit.getPlayer(list.get(0)).getName() + " a gagné!");
+            }
+        }
     }
 }

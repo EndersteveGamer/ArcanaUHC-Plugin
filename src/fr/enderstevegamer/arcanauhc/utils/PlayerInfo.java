@@ -34,4 +34,12 @@ public class PlayerInfo {
         Material mat1 = player.getWorld().getBlockAt(location1).getType();
         return (BlockUtils.isLavaBlock(mat) || BlockUtils.isLavaBlock(mat1));
     }
+
+    public static boolean isInWater(Player player) {
+        Location location = player.getLocation().getBlock().getLocation();
+        Location location1 = location.clone().add(new Vector(0, 1, 0));
+        Material mat = player.getWorld().getBlockAt(location).getType();
+        Material mat1 = player.getWorld().getBlockAt(location1).getType();
+        return (BlockUtils.isWaterBlock(mat) || BlockUtils.isWaterBlock(mat1));
+    }
 }

@@ -33,8 +33,9 @@ public class Amoureux {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (!GameState.getPlayerArcane(player).equals(Arcane.AMOUREUX)) return;
-        if (event.getCause().equals(DamageCause.ENTITY_ATTACK)
-                && !(event.getDamager() instanceof Player)) event.setCancelled(true);
+        if (event.getDamager() instanceof Player) return;
+        if (event.getDamager() instanceof Arrow && ((Arrow) event.getDamager()).getShooter() instanceof Player) return;
+        event.setCancelled(true);
     }
 
     public static void onAttack(EntityDamageByEntityEvent event) {

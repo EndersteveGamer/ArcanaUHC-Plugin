@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -41,6 +40,39 @@ public class GameState {
     private static long roueDeLaFortuneCooldown;
     private static HashMap<UUID, Integer[]> roueDeLaFortuneEffects;
     private static HashMap<UUID, Long> penduImmobilized;
+    private static int jugementStrengthBonus;
+    private static long mondeCooldown;
+
+    public static boolean mondeCooldownFinished() {
+        return System.currentTimeMillis() - mondeCooldown >= 5 * 60000;
+    }
+
+    public static void resetMondeCooldown() {
+        mondeCooldown = System.currentTimeMillis();
+    }
+
+    public static int getJugementStrengthBonus() {
+        return jugementStrengthBonus;
+    }
+
+    public static void upgradeJugementStrength() {
+        jugementStrengthBonus++;
+    }
+
+    public static boolean isPenduImmobilized(Player player) {
+        updatePenduImmobilized();
+        return penduImmobilized.containsKey(player.getUniqueId());
+    }
+
+    public static void updatePenduImmobilized() {
+        ArrayList<UUID> toRemove = new ArrayList<>();
+        for (UUID uuid : penduImmobilized.keySet()) {
+            if (System.currentTimeMillis() - penduImmobilized.get(uuid) >= 2000) {
+                toRemove.add(uuid);
+            }
+        }
+        for (UUID uuid : toRemove) penduImmobilized.remove(uuid);
+    }
 
     public static void penduImmobilize(Player player) {
         penduImmobilized.put(player.getUniqueId(), System.currentTimeMillis());
@@ -262,6 +294,8 @@ public class GameState {
         roueDeLaFortuneCooldown = System.currentTimeMillis();
         roueDeLaFortuneEffects = new HashMap<>();
         penduImmobilized = new HashMap<>();
+        jugementStrengthBonus = 0;
+        resetMondeCooldown();
     }
 
     public static void pregenerateWorld() {
@@ -323,7 +357,8 @@ public class GameState {
             player.setGameMode(GameMode.SURVIVAL);
             player.getInventory().clear();
             PlayerUtils.equipStartingStuff(player);
-            player.teleport(Bukkit.getWorld("world2").getHighestBlockAt(0, 0).getLocation().add(new Vector(0, 1, 0)));
+            player.teleport(Bukkit.getWorld("world2").getHighestBlockAt(0, 0).getLocation()
+                    .add(new Vector(0, 1, 0)).add(new Vector(0.5, 0.5, 0.5)));
             player.setHealth(player.getMaxHealth());
             player.setFoodLevel(20);
             player.setSaturation(20);

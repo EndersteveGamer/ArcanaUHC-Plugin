@@ -9,7 +9,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 public class OnProjectileLand implements Listener {
     @EventHandler
     public static void onProjectileLand(ProjectileHitEvent event) {
-        Amoureux.onProjectileLand(event);
         MaisonDieu.onArrowLand(event);
     }
 }

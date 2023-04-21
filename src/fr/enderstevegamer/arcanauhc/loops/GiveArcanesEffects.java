@@ -26,6 +26,7 @@ public class GiveArcanesEffects extends BukkitRunnable {
             MaisonDieu.giveEffects(player);
             Monde.giveEffects(player);
             Mat.giveEffects(player);
+            Jugement.giveEffects(player);
 
 
             Arcane arcane = GameState.getPlayerArcane(player);

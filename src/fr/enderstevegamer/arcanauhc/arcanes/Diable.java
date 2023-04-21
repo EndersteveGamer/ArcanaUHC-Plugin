@@ -1,11 +1,13 @@
 package fr.enderstevegamer.arcanauhc.arcanes;
 
 import fr.enderstevegamer.arcanauhc.Arcane;
+import fr.enderstevegamer.arcanauhc.GameSettings;
 import fr.enderstevegamer.arcanauhc.GameState;
 import fr.enderstevegamer.arcanauhc.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
@@ -40,24 +42,15 @@ public class Diable {
         if (event.getEntity().getKiller() == null) return;
         Player killer = event.getEntity().getKiller();
         if (!GameState.getPlayerArcane(killer).equals(Arcane.DIABLE)) return;
-        killer.addPotionEffect(new PotionEffect(
-                PotionEffectType.INCREASE_DAMAGE,
-                getStrengthRemainingTime(killer) + 5 * 60 * 20,
-                getStrengthLevel(killer) + 1, false, false
-        ), true);
+        GameState.buffDiablePlayer(killer);
     }
 
-    public static int getStrengthLevel(Player player) {
-        for (PotionEffect effect : player.getActivePotionEffects()) {
-            if (effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)) return effect.getAmplifier();
-        }
-        return -1;
-    }
-
-    public static int getStrengthRemainingTime(Player player) {
-        for (PotionEffect effect : player.getActivePotionEffects()) {
-            if (effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)) return effect.getDuration();
-        }
-        return 0;
+    public static void onAttack(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        Player damager = (Player) event.getDamager();
+        if (!GameState.getPlayerArcane(damager).equals(Arcane.DIABLE)) return;
+        GameState.DiableStengthBuff buff = GameState.getPlayerDiableBuff(damager);
+        if (buff == null) return;
+        event.setDamage(event.getDamage() * 1 + (0.4 * (buff.getLevel() + 1)));
     }
 }

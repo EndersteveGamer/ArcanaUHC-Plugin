@@ -29,6 +29,9 @@ public class RoueDeLaFortune {
         if (effectsContains(effects, 4)) {
             player.setFoodLevel(20);
             player.setSaturation(20);
+            player.addPotionEffect(new PotionEffect(
+                    PotionEffectType.SATURATION, 1, 0, false, false
+            ));
         }
         if (effectsContains(effects, 5)) {
             player.addPotionEffect(new PotionEffect(
@@ -47,7 +50,7 @@ public class RoueDeLaFortune {
         }
         if (effectsContains(effects, 8)) {
             player.addPotionEffect(new PotionEffect(
-                    PotionEffectType.WEAKNESS, 1, 0, false, false
+                    PotionEffectType.WEAKNESS, 1, 3, false, false
             ));
         }
         if (effectsContains(effects, 9)) {

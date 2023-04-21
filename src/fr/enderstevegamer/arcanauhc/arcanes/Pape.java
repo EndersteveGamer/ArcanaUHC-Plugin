@@ -90,6 +90,6 @@ public class Pape {
         if (!event.getItem().getType().equals(Material.GOLDEN_APPLE)) return;
         if (!GameState.getPlayerArcane(event.getPlayer()).equals(Arcane.PAPE)) return;
         event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 60 * 2,
-                1, false, false), true);
+                0, false, false), true);
     }
 }

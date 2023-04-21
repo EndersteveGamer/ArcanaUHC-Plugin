@@ -16,7 +16,7 @@ public class Monde {
     public static void giveEffects(Player player) {
         if (!GameState.getPlayerArcane(player).equals(Arcane.MONDE)) return;
         player.addPotionEffect(new PotionEffect(
-                PotionEffectType.WEAKNESS, 1, 0, false, false
+                PotionEffectType.WEAKNESS, 1, 3, false, false
         ));
     }
 

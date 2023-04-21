@@ -6,7 +6,6 @@ import fr.enderstevegamer.arcanauhc.GameState;
 import fr.enderstevegamer.arcanauhc.arcanes.Diable;
 import fr.enderstevegamer.arcanauhc.arcanes.Empereur;
 import fr.enderstevegamer.arcanauhc.arcanes.Justice;
-import fr.enderstevegamer.arcanauhc.utils.ActionbarUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,22 +31,25 @@ public class OnPlayerDeath implements Listener {
         if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.LUNE)) {
             GameState.setInfiniteTime(1);
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(ChatColor.GOLD + "La lumière illumine ce monde");
+                player.sendMessage(ChatColor.YELLOW + "La lumière illumine ce monde");
             }
         }
         else if (GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SOLEIL)) {
             GameState.setInfiniteTime(-1);
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(ChatColor.GOLD + "L'obscurité assombrit ce monde");
+                player.sendMessage(ChatColor.DARK_BLUE + "L'obscurité assombrit ce monde");
             }
         }
 
         if (event.getEntity().getKiller() != null && GameSettings.getBooleanSetting(GameSettings.GOLDEN_APPLE_ON_KILL)) {
             event.getEntity().getKiller().getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
         }
+
+        // Annonce de la mort
         if (event.getEntity().getKiller() == null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " est mort!");
+                player.sendMessage(ChatColor.RED + "Il était " + ChatColor.GOLD + GameState.getPlayerArcane(event.getEntity()));
             }
         }
         else {
@@ -55,14 +57,30 @@ public class OnPlayerDeath implements Listener {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!GameState.getPlayerArcane(player).equals(Arcane.JUSTICE) && !player.getGameMode().equals(GameMode.SPECTATOR)) {
                     player.sendMessage(ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " est mort!");
+                    player.sendMessage(ChatColor.RED + "Il était " + ChatColor.GOLD + GameState.getPlayerArcane(event.getEntity()));
                 }
                 else {
                     player.sendMessage(ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED +
                             " a été tué par " + ChatColor.GOLD + event.getEntity().getKiller().getName());
+                    player.sendMessage(ChatColor.RED + "Il était " + ChatColor.GOLD + GameState.getPlayerArcane(event.getEntity()));
                 }
             }
         }
 
+        // Détection de fin de game
+        if (GameState.getAlivePlayers().size() == 2) {
+            GameState.setGameStarted(false);
+            GameState.setPlayerArcane(event.getEntity().getUniqueId(), Arcane.SANS_ARCANE);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                ArrayList<UUID> list = (ArrayList<UUID>) GameState.getAlivePlayers().clone();
+                list.remove(event.getEntity().getUniqueId());
+                player.resetTitle();
+                player.sendTitle(ChatColor.GOLD + "Fin de la partie!", ChatColor.GOLD + Bukkit.getPlayer(list.get(0)).getName() + " a gagné!");
+                player.sendMessage(ChatColor.GOLD + Bukkit.getPlayer(list.get(0)).getName() + " a gagné avec l'arcane " + GameState.getPlayerArcane(Bukkit.getPlayer(list.get(0))));
+            }
+        }
+
+        // Héritage des arcanes
         if (event.getEntity().getKiller() == null || !GameState.getPlayerArcane(event.getEntity().getKiller()).equals(Arcane.SANS_ARCANE)) {
             if (!GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SANS_ARCANE)
                     && !GameState.getPlayerArcane(event.getEntity()).equals(Arcane.LUNE)
@@ -86,7 +104,9 @@ public class OnPlayerDeath implements Listener {
             }
         }
         else {
-            if (!GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SANS_ARCANE)) {
+            if (!GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SANS_ARCANE)
+                    && !GameState.getPlayerArcane(event.getEntity()).equals(Arcane.LUNE)
+                    && !GameState.getPlayerArcane(event.getEntity()).equals(Arcane.SOLEIL)) {
                 GameState.setPlayerArcane(event.getEntity().getKiller().getUniqueId(),
                         GameState.getPlayerArcane(event.getEntity()));
                 event.getEntity().getKiller().sendMessage(ChatColor.GREEN + "Vous avez hérité de l'arcane " +
@@ -101,15 +121,5 @@ public class OnPlayerDeath implements Listener {
         event.getEntity().spigot().respawn();
         event.getEntity().teleport(location);
         event.getEntity().sendTitle(ChatColor.RED + "Vous êtes mort!", "");
-
-        if (GameState.getAlivePlayers().size() == 2) {
-            GameState.setGameStarted(false);
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                ActionbarUtils.sendActionBarMessage(player, ChatColor.GOLD + "Fin de la partie!");
-                ArrayList<UUID> list = (ArrayList<UUID>) GameState.getAlivePlayers().clone();
-                list.remove(event.getEntity().getUniqueId());
-                player.sendMessage(ChatColor.GOLD + Bukkit.getPlayer(list.get(0)).getName() + " a gagné!");
-            }
-        }
     }
 }

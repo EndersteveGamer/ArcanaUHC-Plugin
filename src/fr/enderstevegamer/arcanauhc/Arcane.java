@@ -2,7 +2,6 @@ package fr.enderstevegamer.arcanauhc;
 
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +63,7 @@ public class Arcane {
             Arrays.asList(
                     "Documentation pour " + ChatColor.GOLD + Arcane.BATELEUR,
                     "- " + ChatColor.GREEN + "Resistance II " + ChatColor.WHITE + " sur tous types de pierre",
-                    "- 10% de " + ChatColor.GREEN + "drop de l'or " + ChatColor.WHITE + "en  minant du charbon",
+                    "- " + ChatColor.GREEN + "10% de drop de l'or " + ChatColor.WHITE + "en  minant du charbon",
                     "- " + ChatColor.RED + "+100% de dégâts de chute"
             ),
             Arrays.asList(
@@ -91,6 +90,7 @@ public class Arcane {
                     "Documentation pour " + ChatColor.GOLD + Arcane.PAPE,
                     "- " + ChatColor.GREEN + "Haste III permanent",
                     "- " + ChatColor.GREEN + "Double minerais" + ChatColor.WHITE + " pour l'or et le diamant",
+                    "- " + ChatColor.GOLD + "Résistance I pendant 2 minutes quand il mange un pomme dorée",
                     "- " + ChatColor.RED + "Pas d'absorption",
                     "- " + ChatColor.GOLD + "Toutes les 10 minutes désigne un joueur aléatoire et lui fait obtenir une pomme d'or"
             ),
@@ -113,7 +113,7 @@ public class Arcane {
                     "Documentation pour " + ChatColor.GOLD + Arcane.JUSTICE,
                     "- " + ChatColor.GREEN + "Peut voir qui a fait les kills",
                     "- " + ChatColor.GREEN + "+25% de dégâts infligés " + ChatColor.WHITE + "contre les joueurs ayant fait des kills",
-                    "- " + ChatColor.GREEN + "-10 de dégâts reçus " + ChatColor.WHITE + "contre les joueurs ayant fait des kills",
+                    "- " + ChatColor.GREEN + "-10% de dégâts reçus " + ChatColor.WHITE + "contre les joueurs ayant fait des kills",
                     "- " + ChatColor.RED + "Nausée I pendant 1 minute " + ChatColor.WHITE + "si elle tue un joueur n'ayant pas fait de kill"
             ),
             Arrays.asList(
@@ -128,7 +128,7 @@ public class Arcane {
                     + ", " + ChatColor.GREEN + "Resistance I" + ChatColor.WHITE + ", " + ChatColor.GREEN + "Force 40%"
                     + ChatColor.WHITE + ", " + ChatColor.GREEN + "Saturation" + ChatColor.WHITE + ", " + ChatColor.GREEN
                     + "Fire Resistance" + ChatColor.WHITE + ", " + ChatColor.GREEN + "Water Breathing" + ChatColor.WHITE
-                    + ", " + ChatColor.RED + "Slowness I" + ChatColor.WHITE + ", " + ChatColor.RED + "Weakness I"
+                    + ", " + ChatColor.RED + "Slowness I" + ChatColor.WHITE + ", " + ChatColor.RED + "Weakness IV (-2 attack damage)"
                     + ChatColor.WHITE + ", " + ChatColor.RED + "Hunger I" + ChatColor.WHITE + " et " + ChatColor.RED
                     + "Mining Fatigue I"
             ),
@@ -145,7 +145,7 @@ public class Arcane {
                     "- " + ChatColor.GREEN + "-15% de dégâts reçus",
                     "- " + ChatColor.GREEN + "10% de chance d'immobiliser l'ennemi pendant 2 secondes" + ChatColor.WHITE
                     + " avec ses flèches",
-                    "- " + ChatColor.RED + "Weakness I permanent"
+                    "- " + ChatColor.RED + "Weakness IV permanent (-2 attack damage)"
             ),
             Arrays.asList(
                     "Documentation pour " + ChatColor.GOLD + Arcane.SANS_NOM,
@@ -162,8 +162,8 @@ public class Arcane {
             ),
             Arrays.asList(
                     "Documentation pour " + ChatColor.GOLD + Arcane.DIABLE,
-                    "- Les pommes d'or " + ChatColor.RED + "régènèrent instantanément sa vie",
-                    "- Obtient " + ChatColor.GREEN + "Force I pendant 5 minutes " + ChatColor.WHITE + "à chaque kill (cumulable)",
+                    "- Les pommes d'or " + ChatColor.GREEN + "régènèrent instantanément sa vie",
+                    "- Obtient " + ChatColor.GREEN + "Force 40% pendant 5 minutes " + ChatColor.WHITE + "à chaque kill (cumulable)",
                     "- " + ChatColor.RED + "15% de chance de ne pas drop " + ChatColor.WHITE + "le diamant et l'or"
             ),
             Arrays.asList(
@@ -207,16 +207,16 @@ public class Arcane {
                     "Documentation pour " + ChatColor.GOLD + Arcane.JUGEMENT,
                     "- " + ChatColor.GREEN + "Pas de dégâts PvE",
                     "- " + ChatColor.GREEN + "Saturation permanente",
-                    "- " + ChatColor.GREEN + "Inflige Weakness I" + ChatColor.WHITE + " à tous les joueurs dans un rayon de 10 blocs",
+                    "- " + ChatColor.GREEN + "Inflige Weakness IV (-2 attack damage)" + ChatColor.WHITE + " à tous les joueurs dans un rayon de 10 blocs",
                     "- " + ChatColor.RED + "Slowness I" + ChatColor.WHITE + " si un joueur se trouve à moins de 10 blocs de lui",
                     "- " + ChatColor.GOLD + "+1% de force par arcane morte"
             ),
             Arrays.asList(
                     "Documentation pour " + ChatColor.GOLD + Arcane.MONDE,
                     "- " + ChatColor.GREEN + "13 coeurs",
-                    "- " + ChatColor.RED + "Weakness I permanent",
+                    "- " + ChatColor.RED + "Weakness IV permanent (-2 attack damage)",
                     "- " + ChatColor.GOLD + "Toutes les 5 minutes, reçoit l'arcane, le nombre de pommes d'or et la quantité" +
-                            "de vie d'un joueur aléatoire de la partie. Le joueur observé reçoit Weakness I pendant 5 minutes"
+                            " de vie d'un joueur aléatoire de la partie. Le joueur observé reçoit Weakness I pendant 5 minutes"
             ),
             Arrays.asList(
                     "Documentation pour " + ChatColor.GOLD + Arcane.MAT,

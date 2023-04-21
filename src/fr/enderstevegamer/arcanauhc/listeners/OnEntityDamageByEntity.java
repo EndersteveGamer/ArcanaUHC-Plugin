@@ -41,5 +41,6 @@ public class OnEntityDamageByEntity implements Listener {
         Jugement.onAttack(event);
         Mat.onAttack(event);
         Mat.onArrowHit(event);
+        Diable.onAttack(event);
     }
 }

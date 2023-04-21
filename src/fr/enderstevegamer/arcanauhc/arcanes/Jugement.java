@@ -2,6 +2,9 @@ package fr.enderstevegamer.arcanauhc.arcanes;
 
 import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameState;
+import fr.enderstevegamer.arcanauhc.utils.LocationUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,13 +19,13 @@ public class Jugement {
         player.setSaturation(20);
 
         boolean hasSlowness = false;
-        for (Entity entity : player.getWorld().getNearbyEntities(player.getLocation(), 10, 10, 10)) {
-            if (!(entity instanceof Player)) continue;
-            if (entity.equals(player)) continue;
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+            if (player1.getGameMode().equals(GameMode.SPECTATOR)) continue;
+            if (LocationUtils.distanceToLocation(player.getLocation(), player1.getLocation()) > 10) continue;
+            if (player == player1) continue;
             hasSlowness = true;
-            Player player1 = (Player) entity;
             player1.addPotionEffect(new PotionEffect(
-                    PotionEffectType.WEAKNESS, 1, 0, false, false
+                    PotionEffectType.WEAKNESS, 1, 3, false, false
             ));
         }
         if (hasSlowness) {

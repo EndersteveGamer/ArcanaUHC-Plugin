@@ -4,7 +4,6 @@ import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,7 +18,7 @@ public class Empereur {
                 1,
                 false,
                 false
-        ));
+        ), true);
     }
 
     public static void onDamage(EntityDamageByEntityEvent event) {

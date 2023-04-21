@@ -4,6 +4,7 @@ import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameSettings;
 import fr.enderstevegamer.arcanauhc.GameState;
 import fr.enderstevegamer.arcanauhc.arcanes.Monde;
+import net.minecraft.server.v1_8_R3.GameRules;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -70,6 +71,10 @@ public class GameStateUpdater extends BukkitRunnable {
             GameState.updateRoueDeLaFortune();
             GameState.updateAmoureuxLinks();
             Monde.giveInformation();
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getWorld().setGameRuleValue("naturalRegeneration", "false");
         }
     }
 

@@ -40,7 +40,7 @@ public class Chariot {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (!GameState.getPlayerArcane(player).equals(Arcane.CHARIOT)) return;
-        event.setDamage(event.getDamage() * 1.1);
+        event.setDamage(event.getDamage() * 1.15);
     }
 
     public static void onArrowHit(EntityDamageByEntityEvent event) {

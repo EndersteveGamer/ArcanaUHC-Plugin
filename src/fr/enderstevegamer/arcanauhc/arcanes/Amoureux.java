@@ -70,11 +70,6 @@ public class Amoureux {
         GameState.addAmoureuxSnowball(snowball, player);
     }
 
-    public static void onProjectileLand(ProjectileHitEvent event) {
-        if (!(event.getEntity() instanceof Snowball)) return;
-        GameState.deleteAmoureuxSnowball(event.getEntity().getUniqueId());
-    }
-
     public static void onArrowHit(EntityDamageByEntityEvent event) {
         if (!event.getCause().equals(DamageCause.PROJECTILE)) return;
         if (!(event.getDamager() instanceof Arrow)) return;

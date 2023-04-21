@@ -4,6 +4,7 @@ import fr.enderstevegamer.arcanauhc.Arcane;
 import fr.enderstevegamer.arcanauhc.GameState;
 import fr.enderstevegamer.arcanauhc.utils.ActionbarUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -18,7 +19,6 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Locale;
 
 public class Imperatrice {
     private static final ArrayList<Material> SWORDS = new ArrayList<>(Arrays.asList(
@@ -37,9 +37,10 @@ public class Imperatrice {
     }
 
     public static void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
         if (!(event.getDamager() instanceof Player)) return;
-        if (((Player) event.getDamager()).getItemInHand() == null) return;
+        Player player = (Player) event.getDamager();
+        if (!GameState.getPlayerArcane(player).equals(Arcane.IMPERATRICE)) return;
+        if (player.getItemInHand() == null) return;
         Material mat = ((Player) event.getDamager()).getItemInHand().getType();
         if (!SWORDS.contains(mat)) return;
         event.setDamage(event.getDamage() * 1.15);
@@ -66,9 +67,11 @@ public class Imperatrice {
         Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), 15, 15, 15);
         entities.remove(player);
         for (Entity entity : entities) {
-            entity.setVelocity(
-                    getVectorFromLocations(player.getLocation(), entity.getLocation()).normalize().multiply(SHOCKWAVE_FORCE)
-            );
+            if (!(entity instanceof Player) || !((Player) entity).getGameMode().equals(GameMode.SPECTATOR)) {
+                entity.setVelocity(
+                        getVectorFromLocations(player.getLocation(), entity.getLocation()).normalize().multiply(SHOCKWAVE_FORCE)
+                );
+            }
         }
         player.getWorld().createExplosion(
                 player.getLocation().getX(),

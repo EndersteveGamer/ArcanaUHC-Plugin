@@ -56,12 +56,14 @@ public class Main extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new OnProjectileLand(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new OnFoodLevelChange(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
 
         new ArmorPassiveLimit().runTaskTimer(this, 0, 0);
         new DiamondPassiveLimit().runTaskTimer(this, 0, 0);
         new SetScoreboards().runTaskTimer(this, 0, 0);
         new GameStateUpdater().runTaskTimer(this, 0, 0);
         new GiveArcanesEffects().runTaskTimer(this, 0, 0);
+        new DiableStrengthBuffUpdates().runTaskTimer(this, 0, 0);
 
         Bukkit.getLogger().log(Level.INFO, ChatColor.GREEN + "Le plugin ArcanaUHC a été chargé avec succès!");
     }

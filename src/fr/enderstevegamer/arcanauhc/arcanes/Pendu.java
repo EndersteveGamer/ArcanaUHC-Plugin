@@ -16,7 +16,7 @@ public class Pendu {
     public static void giveEffects(Player player) {
         if (!GameState.getPlayerArcane(player).equals(Arcane.PENDU)) return;
         player.addPotionEffect(new PotionEffect(
-                PotionEffectType.WEAKNESS, 1, 0, false, false
+                PotionEffectType.WEAKNESS, 1, 3, false, false
         ));
     }
 
@@ -38,6 +38,7 @@ public class Pendu {
         if (Math.random() >= 0.1) return;
         GameState.penduImmobilize(damaged);
         damaged.sendMessage(ChatColor.RED + "Vous avez été immobilisé par un arcane " + ChatColor.GOLD + Arcane.PENDU);
+        shooter.sendMessage(ChatColor.GREEN + "Vous avez immobilisé " + ChatColor.GOLD + damaged.getName());
     }
 
     public static void onMove(PlayerMoveEvent event) {

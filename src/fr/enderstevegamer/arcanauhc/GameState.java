@@ -1,5 +1,6 @@
 package fr.enderstevegamer.arcanauhc;
 
+import fr.enderstevegamer.arcanauhc.utils.ActionbarUtils;
 import fr.enderstevegamer.arcanauhc.utils.AmoureuxLink;
 import fr.enderstevegamer.arcanauhc.utils.MathUtils;
 import fr.enderstevegamer.arcanauhc.utils.PlayerUtils;
@@ -15,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -42,6 +44,69 @@ public class GameState {
     private static HashMap<UUID, Long> penduImmobilized;
     private static int jugementStrengthBonus;
     private static long mondeCooldown;
+    private static HashMap<UUID, DiableStengthBuff> diableBuffs;
+
+    public static class DiableStengthBuff {
+        int level;
+        long effectTime;
+        long startTime;
+
+        public DiableStengthBuff(int level, long effectTime) {
+            this.level = level;
+            this.effectTime = effectTime;
+            this.startTime = System.currentTimeMillis();
+        }
+
+        public void upgradeBuff() {
+            level++;
+            effectTime += 5 * 60000;
+        }
+
+        public boolean isValid() {
+            return System.currentTimeMillis() < startTime + effectTime;
+        }
+
+        public int getLevel() {
+            return this.level;
+        }
+
+        public long getRemainingTime() {
+            return (startTime + effectTime) - System.currentTimeMillis();
+        }
+    }
+
+    public static DiableStengthBuff getPlayerDiableBuff(Player player) {
+        if (!diableBuffs.containsKey(player.getUniqueId())) return null;
+        return diableBuffs.get(player.getUniqueId());
+    }
+
+    public static void buffDiablePlayer(Player player) {
+        if (!diableBuffs.containsKey(player.getUniqueId())) {
+            diableBuffs.put(player.getUniqueId(), new DiableStengthBuff(0, 5 * 60000));
+        }
+        else {
+            diableBuffs.get(player.getUniqueId()).upgradeBuff();
+        }
+    }
+
+    public static void updateDiableBuffs() {
+        ArrayList<UUID> toRemove = new ArrayList<>();
+        for (UUID uuid : diableBuffs.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {toRemove.add(uuid); continue;}
+            if (!GameState.getPlayerArcane(player).equals(Arcane.DIABLE)) {toRemove.add(uuid); continue;}
+            if (!diableBuffs.get(uuid).isValid()) {
+                toRemove.add(uuid);
+            }
+        }
+        for (UUID uuid : toRemove) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                ActionbarUtils.sendActionBarMessage(player, "");
+            }
+            diableBuffs.remove(uuid);
+        }
+    }
 
     public static boolean mondeCooldownFinished() {
         return System.currentTimeMillis() - mondeCooldown >= 5 * 60000;
@@ -103,6 +168,36 @@ public class GameState {
                 effects[1] = (int) (Math.random() * 11);
             }
             roueDeLaFortuneEffects.put(player.getUniqueId(), effects);
+            player.sendMessage(ChatColor.GOLD + "Vous avez obtenu les effets " +
+                    roueDeLaFortuneEffectString(effects[0]) + ChatColor.GOLD + " et " +
+                    roueDeLaFortuneEffectString(effects[1]));
+        }
+    }
+
+    public static String roueDeLaFortuneEffectString(int effect) {
+        switch (effect) {
+            case 0:
+                return ChatColor.GREEN + "Speed";
+            case 1:
+                return ChatColor.GREEN + "Haste";
+            case 2:
+                return ChatColor.GREEN + "Résistance";
+            case 3:
+                return ChatColor.GREEN + "Force";
+            case 4:
+                return ChatColor.GREEN + "Saturation";
+            case 5:
+                return ChatColor.GREEN + "Fire Resistance";
+            case 6:
+                return ChatColor.GREEN + "Water Breathing";
+            case 7:
+                return ChatColor.RED + "Slowness";
+            case 8:
+                return ChatColor.RED + "Weakness";
+            case 9:
+                return ChatColor.RED + "Hunger";
+            default:
+                return ChatColor.RED + "Mining Fatigue";
         }
     }
 
@@ -168,14 +263,6 @@ public class GameState {
 
     public static void addAmoureuxSnowball(Snowball snowball, Player player) {
         amoureuxSnowballs.put(snowball.getUniqueId(), player.getUniqueId());
-    }
-
-    public static UUID amoureuxSnowballLauncher(UUID snowballUuid) {
-        return amoureuxSnowballs.get(snowballUuid);
-    }
-
-    public static void deleteAmoureuxSnowball(UUID snowballUuid) {
-        amoureuxSnowballs.remove(snowballUuid);
     }
 
     public static void resetAmoureuxCooldown(Player player) {
@@ -296,6 +383,7 @@ public class GameState {
         penduImmobilized = new HashMap<>();
         jugementStrengthBonus = 0;
         resetMondeCooldown();
+        diableBuffs = new HashMap<>();
     }
 
     public static void pregenerateWorld() {
@@ -404,9 +492,19 @@ public class GameState {
             playerArcanes.put(player.getUniqueId(), arcanes.get(i));
             if (arcanes.get(i).equals(Arcane.SANS_ARCANE)) {
                 player.sendMessage(ChatColor.GREEN + "Vous n'avez pas reçu d'Arcane!");
+                player.sendMessage("Voici les particularités de votre rôle:");
+                List<String> doc = Arcane.SANS_ARCANE.getDocumentation();
+                for (int k = 1; k < doc.size(); k++) {
+                    player.sendMessage(doc.get(k));
+                }
             }
             else {
                 player.sendMessage(ChatColor.GREEN + "Vous avez reçu l'Arcane " + ChatColor.GOLD + arcanes.get(i).toString());
+                player.sendMessage("Voici les particularités de votre rôle:");
+                List<String> doc = arcanes.get(i).getDocumentation();
+                for (int k = 1; k < doc.size(); k++) {
+                    player.sendMessage(doc.get(k));
+                }
                 if (arcanes.get(i).equals(Arcane.AMOUREUX)) {
                     ItemStack bow = new ItemStack(Material.BOW);
                     bow.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);

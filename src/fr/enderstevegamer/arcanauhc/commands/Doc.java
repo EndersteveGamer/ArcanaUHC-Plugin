@@ -87,6 +87,7 @@ public class Doc implements CommandExecutor {
                 break;
             case "sans_arcane":
                 displayDoc(Arcane.SANS_ARCANE, s);
+                break;
             case "self":
                 displayDoc(GameState.getPlayerArcane(p), s);
                 break;

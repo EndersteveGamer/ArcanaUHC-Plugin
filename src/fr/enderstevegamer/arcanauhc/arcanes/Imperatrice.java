@@ -60,7 +60,6 @@ public class Imperatrice {
             imperatriceShockwave(event.getPlayer());
             GameState.resetImperatriceCooldown(event.getPlayer());
         }
-
     }
 
     public static void imperatriceShockwave(Player player) {
